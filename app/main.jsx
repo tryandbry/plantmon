@@ -7,11 +7,11 @@ import store from './store'
 
 // containers
 import root from './containers/root';
+import BarChartContainer from './containers/BarChartContainer'
 
 // components
 import Jokes from './components/Jokes'
 import NotFound from './components/NotFound'
-import Chart from './components/Chart'
 
 render(
   <Provider store={store}>
@@ -19,7 +19,7 @@ render(
       <Route path="/" component={root}>
         <IndexRedirect to="/jokes" />
         <Route path="/jokes" component={Jokes} />
-        <Route path="/chart" component={Chart} />
+        <Route path="/chart" component={BarChartContainer} />
       </Route>
       <Route path='*' component={NotFound} />
     </Router>
