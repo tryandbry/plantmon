@@ -1,7 +1,8 @@
 import React from 'react';
-import { scaleLinear } from 'd3-scale';
+import { scaleLinear, scaleBand } from 'd3-scale';
 import { max } from 'd3-array';
 import { select } from 'd3-selection';
+import { axisBottom, axisLeft } from 'd3-axis';
 
 export default class BarChart extends React.Component {
   constructor(props){
@@ -16,6 +17,55 @@ export default class BarChart extends React.Component {
   }
   createBarChart() {
     const node = this.node
+    var margin = {top: 20, right: 30, bottom: 30, left: 40},
+        width = 500 - margin.left - margin.right,
+        height = 500 - margin.top - margin.bottom;
+
+    //set bounds of <svg> element
+    var chart = select(node);
+
+    chart
+        .attr("width",width + margin.left + margin.right)
+        .attr("height",width + margin.top + margin.bottom)
+      .append("g")
+        .attr("transform", `translate(${margin.left},${margin.top})`);
+
+    //set scales
+    var x = scaleBand()
+      .domain(["A","B","C","D"])
+      .rangeRound([0,width]);
+      
+    var y = scaleLinear()
+      .range([height,0]);
+
+    //axes
+    var xAxis = axisBottom(x);
+
+    chart.append('g')
+        .attr('class','x axis')
+        .attr('transform',`translate(0,${height})`)
+        .call(xAxis);
+
+    var yAxis = axisLeft(y);
+
+    chart.append('g')
+        .attr('class','y axis')
+        .call(yAxis);
+
+    var staticData = [5,10,1,3];
+    chart.selectAll('rect')
+        .data(staticData)
+        .enter()
+        .append('rect');
+
+    chart.selectAll('rect')
+        .data(staticData)
+        .style('fill', '#fe9922')
+        .attr('x', (d,i) => i * 25)
+        //.attr('y', d => eight-100)
+        .attr('height', d => height-100)
+        .attr('width', 25)
+    /*
     const dataMax = max(this.props.data) //sets alias for max value
     // convenience function to scale y variable within the bounds 
     // of the <svg /> element
@@ -54,13 +104,12 @@ export default class BarChart extends React.Component {
       .attr('y', d => this.props.size[1] - yScale(d))
       .attr('height', d => yScale(d))
       .attr('width', 25)
+      */
   }
 
   render() {
     return (
-      <svg
-        ref={node => this.node = node}
-        width={500} height={500}>
+      <svg ref={node => this.node = node}>
       </svg>
     )
   }
