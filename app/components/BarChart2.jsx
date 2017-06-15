@@ -13,18 +13,13 @@ export default class BarChart extends React.Component {
     super(props);
 
     this.state = {
-      data: [5,10,1,3],
+      data: [5,10,1,3,4,5,7,1,3,9,10,2,3],
     };
   }
   
   componentDidMount(){
     this.timeoutId = setInterval(()=>this.setState({
-      data: [
-        randomInt(10),
-        randomInt(10),
-        randomInt(10),
-        randomInt(10),
-      ],
+      data: [...this.state.data.slice(1),randomInt(10)],
     }),500);
   }
 
