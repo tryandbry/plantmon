@@ -50,6 +50,7 @@ module.exports = app
 
   // Serve static files from ../public
   .use(express.static(resolve(__dirname, '..', 'public')))
+  .use(express.static(resolve(__dirname, '..', 'node_modules/socket.io-client/dist')))
 
   // Serve our api - ./api also requires in ../db, which syncs with our database
   .use('/api', require('./api'))
@@ -77,6 +78,7 @@ module.exports = app
   })
 
 if (module === require.main) {
+  // socket.io
   // Start listening only if we're the main module.
   //
   // https://nodejs.org/api/modules.html#modules_accessing_the_main_module
@@ -90,6 +92,9 @@ if (module === require.main) {
       console.log(`Listening on http://${urlSafeHost}:${port}`)
     }
   )
+
+  var io = require('socket.io')(server);
+  require('./socket')(io);
 }
 
 // This check on line 64 is only starting the server if this file is being run directly by Node, and not required by another file.
