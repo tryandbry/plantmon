@@ -24,17 +24,20 @@ export default class BarChart extends React.Component {
     }),500);
     */
     socket.on('tessel',(payload)=>{
-      console.log('socket emit capture:',payload);
+      //console.log('socket emit capture:',payload);
+      let dataArr = this.state.data;
+      if(dataArr.length > 19) dataArr = dataArr.slice(1);
+      this.setState({data: [...dataArr,payload.data]});
     });
   }
 
   render() {
     const staticData = this.state.data;
-    const dataMax = Math.max(...staticData) //sets alias for max value
+    //const dataMax = Math.max(...staticData) //sets alias for max value
     // convenience function to scale y variable within the bounds 
     // of the <svg /> element
     const yScale = scaleLinear()
-      .domain([0, dataMax])
+      .domain([0, 1])
       .range([0, staticSize[1]])
 
     return (

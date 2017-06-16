@@ -7,10 +7,10 @@ module.exports = (io)=>{
     setInterval(()=>{
       axios.get('http://172.28.116.103')
       .then(payload=>{
-        console.log('tessel data:',payload.data);
+        //console.log('tessel data:',payload.data);
         socket.emit('tessel',{data: payload.data});
       })
       .catch(err=>console.error(err));
-    },1000);
+    },500);
   });
 }
