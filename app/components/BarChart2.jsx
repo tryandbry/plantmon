@@ -4,7 +4,7 @@ import { max } from 'd3-array';
 import { select } from 'd3-selection';
 
 //var staticData = [5,10,1,3];
-var staticSize = [500,500];
+var staticSize = [500,250];
 
 const randomInt = (n)=>Math.round(Math.random()*n);
 
@@ -26,7 +26,7 @@ export default class BarChart extends React.Component {
     socket.on('tessel',(payload)=>{
       //console.log('socket emit capture:',payload);
       let dataArr = this.state.data;
-      if(dataArr.length > 19) dataArr = dataArr.slice(1);
+      if(dataArr.length > 49) dataArr = dataArr.slice(1);
       this.setState({data: [...dataArr,payload.data]});
     });
   }
@@ -47,10 +47,10 @@ export default class BarChart extends React.Component {
             <Rect
               key={yScale(d)}
               style={{fill: "#fe9922"}}
-              x={i*25}
+              x={i*10}
               y={staticSize[1] - yScale(d)}
               height={yScale(d)}
-              width="25" />
+              width="10" />
           )}
         </svg>
       </div>
