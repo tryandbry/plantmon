@@ -45,7 +45,7 @@ export default class BarChart extends React.Component {
         <svg width="500" height="500">
           {staticData.map((d,i)=>
             <Rect
-              key={i}
+              key={yScale(d)}
               style={{fill: "#fe9922"}}
               x={i*25}
               y={staticSize[1] - yScale(d)}
