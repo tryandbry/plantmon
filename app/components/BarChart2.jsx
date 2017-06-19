@@ -25,9 +25,13 @@ export default class BarChart extends React.Component {
     */
     socket.on('tessel',(payload)=>{
       //console.log('socket emit capture:',payload);
+      let addKey = {
+        key: Date.now(),
+        data: payload.data,
+      };
       let dataArr = this.state.data;
       if(dataArr.length > 49) dataArr = dataArr.slice(1);
-      this.setState({data: [...dataArr,payload.data]});
+      this.setState({data: [...dataArr,addKey]});
     });
   }
 
@@ -45,11 +49,11 @@ export default class BarChart extends React.Component {
         <svg width="500" height="500">
           {staticData.map((d,i)=>
             <Rect
-              key={yScale(d)}
+              key={yScale(d.key)}
               style={{fill: "#fe9922"}}
               x={i*10}
-              y={staticSize[1] - yScale(d)}
-              height={yScale(d)}
+              y={staticSize[1] - yScale(d.data)}
+              height={yScale(d.data)}
               width="10" />
           )}
         </svg>
