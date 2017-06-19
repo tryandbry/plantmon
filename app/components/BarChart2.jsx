@@ -1,10 +1,14 @@
 import React from 'react';
-import { scaleLinear } from 'd3-scale';
+import { scaleLinear, scaleBand, scaleOrdinal } from 'd3-scale';
+import { axisBottom } from 'd3-axis';
 import { max } from 'd3-array';
-import { select } from 'd3-selection';
+import { select, selectAll } from 'd3-selection';
 
 //var staticData = [5,10,1,3];
-var staticSize = [500,250];
+var staticSize = [600,250];
+var margin = {top:20, right: 30, bottom:30, left: 40};
+var w = staticSize[0] - margin.left - margin.right;
+var h = staticSize[1] - margin.top - margin.bottom;
 
 const randomInt = (n)=>Math.round(Math.random()*n);
 
@@ -30,31 +34,44 @@ export default class BarChart extends React.Component {
         data: payload.data,
       };
       let dataArr = this.state.data;
-      if(dataArr.length > 49) dataArr = dataArr.slice(1);
+      if(dataArr.length > 39) dataArr = dataArr.slice(1);
       this.setState({data: [...dataArr,addKey]});
     });
+
+    var x = scaleBand()
+      .domain((n=>{
+        let arr = [];
+        for(let i=0;i<n;i++){
+          arr.push(i);
+        }
+        return arr.reverse();
+      })(40))
+      .rangeRound([0, staticSize[0]]);
+
+    const xAxis = axisBottom(x);
+
+    select('#chart').append('g')
+        .attr('class', 'x axis')
+        .attr('transform', `translate(0,${h})`)
+        .call(xAxis);
   }
 
   render() {
-    const staticData = this.state.data;
-    //const dataMax = Math.max(...staticData) //sets alias for max value
-    // convenience function to scale y variable within the bounds 
-    // of the <svg /> element
     const yScale = scaleLinear()
       .domain([0, 1])
-      .range([0, staticSize[1]])
+      .range([0, staticSize[1]]);
 
     return (
       <div>
-        <svg width="500" height="500">
+        <svg id="chart" width={staticSize[0]} height={staticSize[1]}>
           {staticData.map((d,i)=>
             <Rect
               key={yScale(d.key)}
               style={{fill: "#fe9922"}}
-              x={i*10}
-              y={staticSize[1] - yScale(d.data)}
+              x={i*15}
+              y={h - yScale(d.data)}
               height={yScale(d.data)}
-              width="10" />
+              width="15" />
           )}
         </svg>
       </div>
