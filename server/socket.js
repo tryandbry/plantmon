@@ -12,6 +12,6 @@ module.exports = (io)=>{
         socket.emit('tessel',{data: payload.data});
       })
       .catch(err=>console.error(err));
-    },700);
+    },1000);
   });
 }

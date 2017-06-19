@@ -57,6 +57,8 @@ export default class BarChart extends React.Component {
   }
 
   render() {
+    const DATA = this.state.data;
+
     const yScale = scaleLinear()
       .domain([0, 1])
       .range([0, staticSize[1]]);
@@ -64,7 +66,7 @@ export default class BarChart extends React.Component {
     return (
       <div>
         <svg id="chart" width={staticSize[0]} height={staticSize[1]}>
-          {staticData.map((d,i)=>
+          {DATA.map((d,i)=>
             <Rect
               key={yScale(d.key)}
               style={{fill: "#fe9922"}}
